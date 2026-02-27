@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>COLLEGE GUIDE</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 550px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    color: #2c5364;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2c5364;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #1e3c72;
+}
+
+.result {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f4f6f9;
+    border-radius: 10px;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.card {
+    background: #f4f6f9;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- MAIN PAGE -->
+<div id="mainPage">
+
+<h1>COLLEGE GUIDE</h1>
+
+<input type="text" id="name" placeholder="Enter Student Name">
+<input type="number" id="percentage" placeholder="Inter (12th) Percentage">
+
+<select id="course">
+    <option value="">Select Course</option>
+    <option value="CSE">B.Tech CSE</option>
+    <option value="ECE">B.Tech ECE</option>
+    <option value="BBA">BBA</option>
+    <option value="BCom">B.Com</option>
+</select>
+
+<button onclick="generateResult()">Get Admission Guidance</button>
+
+<div id="output"></div>
+
+</div>
+
+<!-- COLLEGE PAGE -->
+<div id="collegePage" class="hidden">
+
+<h1>🏫 College Recommendations</h1>
+
+<div id="collegeCards"></div>
+
+<button onclick="goBack()">⬅ Back</button>
+
+</div>
+
+</div>
+
+<script>
+
+function generateResult() {
+
+let name = document.getElementById("name").value.trim();
+let percentage = parseFloat(document.getElementById("percentage").value);
+let course = document.getElementById("course").value;
+let outputDiv = document.getElementById("output");
+
+if (name === "" || isNaN(percentage) || course === "") {
+    outputDiv.innerHTML = "<div class='error'>Please fill all fields correctly.</div>";
+    return;
+}
+
+let tier = "";
+
+if (percentage >= 95) tier = "Elite Tier Colleges";
+else if (percentage >= 85) tier = "Tier 1 Colleges";
+else if (percentage >= 70) tier = "Tier 2 Colleges";
+else if (percentage >= 60) tier = "Tier 3 Colleges";
+else tier = "Local / Private Colleges";
+
+outputDiv.innerHTML = `
+<div class="result">
+<h3>Hello ${name} 👋</h3>
+<p><b>Your Percentage:</b> ${percentage}%</p>
+<p><b>Recommended Category:</b> ${tier}</p>
+<p><b>Selected Course:</b> ${course}</p>
+<button onclick="showColleges()">View College Details</button>
+</div>
+`;
+
+}
+
+function showColleges() {
+
+let percentage = parseFloat(document.getElementById("percentage").value);
+let cards = document.getElementById("collegeCards");
+cards.innerHTML = "";
+
+let collegeData = [];
+
+if (percentage >= 95) {
+    collegeData = [
+        {
+            name: "IIT Bombay",
+            package: "₹2.5 Crore+",
+            fees: "₹2.5L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/1/11/IIT_Bombay_Main_Building.jpg"
+        },
+        {
+            name: "BITS Pilani",
+            package: "₹1.8 Crore",
+            fees: "₹4L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/5/56/BITS_Pilani.jpg"
+        }
+    ];
+}
+else if (percentage >= 85) {
+    collegeData = [
+        {
+            name: "NIT Trichy",
+            package: "₹1.2 Crore",
+            fees: "₹1.8L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/0/0c/NIT_Trichy_Main_Building.jpg"
+        },
+        {
+            name: "IIIT Hyderabad",
+            package: "₹1 Crore+",
+            fees: "₹3L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/4/4e/IIIT_Hyderabad.jpg"
+        }
+    ];
+}
+else if (percentage >= 70) {
+    collegeData = [
+        {
+            name: "VIT University",
+            package: "₹1 Crore+",
+            fees: "₹2L - ₹4L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/6/6e/VIT_Vellore_Main_Building.jpg"
+        },
+        {
+            name: "SRM University",
+            package: "₹52 LPA",
+            fees: "₹2L - ₹3L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/0/08/SRM_University_Main_Block.jpg"
+        }
+    ];
+}
+else if (percentage >= 60) {
+    collegeData = [
+        {
+            name: "State Engineering College",
+            package: "₹18 LPA",
+            fees: "₹80K - ₹1.5L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/3/3d/KL_University_Main_Block.jpg"
+        }
+    ];
+}
+else {
+    collegeData = [
+        {
+            name: "Local Private College",
+            package: "₹8 LPA",
+            fees: "₹50K - ₹1L/year",
+            img: "https://upload.wikimedia.org/wikipedia/commons/3/3d/KL_University_Main_Block.jpg"
+        }
+    ];
+}
+
+collegeData.forEach(college => {
+    cards.innerHTML += `
+    <div class="card">
+        <img src="${college.img}">
+        <h3>${college.name}</h3>
+        <p><b>Highest Package:</b> ${college.package}</p>
+        <p><b>Average Fees:</b> ${college.fees}</p>
+    </div>
+    `;
+});
+
+document.getElementById("mainPage").classList.add("hidden");
+document.getElementById("collegePage").classList.remove("hidden");
+
+}
+
+function goBack() {
+document.getElementById("collegePage").classList.add("hidden");
+document.getElementById("mainPage").classList.remove("hidden");
+}
+
+</script>
+
+</body>
+</html>
